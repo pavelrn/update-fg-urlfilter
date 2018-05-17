@@ -90,6 +90,6 @@ vagrant@vagrant-ubuntu-trusty-64:~/update-fg-urlfilter$
 
 ```
 
-### FortiOS 6.0
+### FortiOS 6.0 notes
 
-Please note that this playbook is tested for FortiOS 5.6.4. Seems like FortiOS 6.0 has a better way of pushing URLs into FortiGate via external threat feeds that are auto-fethed by FortiGate from a web server. Please check release notes for details.
+Please note that this playbook is tested for FortiOS 5.6.4. Seems like FortiOS 6.0 has a better way of pushing URLs into FortiGate via external threat feeds that are auto fetched by FortiGate from a web server. Please check release notes for details.

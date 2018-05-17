@@ -1,9 +1,9 @@
 # update-fg-urlfilter
 
-This is a simple playbook to update (add, delete items) static URL filter at Fortinet FortiGate UTM devices.
-URL filter items should be placed inside `urls.json` file beforehand.
+This is a simple playbook to update static URL filter (add, delete filter entries) inside Fortinet FortiGate UTM devices.
+URL filter entries are taken from `urls.json` file that should be created beforehand.
 
-### How to run
+### How to install
 
 Install ansible 2.5+ and fortiosapi. 
 
@@ -35,19 +35,24 @@ git clone https://github.com/pavelrn/update-fg-urlfilter.git
 cd update-fg-urlfilter/
 ```
 
-In `update-urls.yml' check connection parameters to match your environment:
+### How to configure
+
+
+Open `update-urls.yml` and check connection parameters to match your environment:
 
 ```
 hosts: localhost
   vars:
-   host: "<FG IP@>"
-   username: "<admin username>"
-   password: "<admin password>"
+   host: "<set FG IP@>"
+   username: "<ser admin username>"
+   password: "<set admin password>"
    vdom: "<VDOM name to make changes to>"
 
 ```
 
-Paste filtered URLS into `urls.json`.
+Enter filtered URLs into `urls.json`.
+
+### How to run
 
 Run playbook:
 
@@ -84,47 +89,7 @@ localhost                  : ok=4    changed=1    unreachable=0    failed=0
 vagrant@vagrant-ubuntu-trusty-64:~/update-fg-urlfilter$ 
 
 ```
- 
-Please fill in Ansible inventory file before you begin. The inventory file should contain the devices to be managed. 
 
-Linux- and Python-enabed are natively supported via Ansible and device types will be learned via Ansible setup module. Other devices (like FortiOS, Exreme Networks) need ansible_os to be specified.
-Please see sample inventory file below.
+### FortiOS 6.0
 
-```
-[managed_devices]
-cumulus.local
-extreme.local ansible_os=exos
-fortigate.local ansible_os=fortios fortios_vdom="global"
-```
-
-### Before you begin: model
-
-Please fill in management protocols params inside group_vars/managed_devices file. This data will be used to configure management protocols on network devices.
-
-```
-vrf: mgmt
-
-snmp:
-  contact: "admin@local"
-  location: "datacenter"
-  v3:
-    - server_ip: 1.1.1.1
-      user: monitor
-      auth: 123456
-      enc: 654321
-
-ntp_servers:
-  - 192.168.1.10
-  - 192.168.1.20
-
-syslog_servers:
-  - 192.168.5.14
-
-
-ssh:
-  - user: monitor
-    enc_pass: $6$jaSl0NPh$h9cD1D8OQbGRW99sOl0lMlLabVx5p8eCvZQAYdOqtGkSKlcr/93HRb.O2phIR9FSSI6EOJYLDXUGfVxWyXLEx/
-    # 123456
-    # mkpasswd --method=SHA-512 <pass>
-
-```
+Please note that this playbook is tested for FortiOS 5.6.4. Seems like FortiOS 6.0 has a better way of pushing URLs into FortiGate via external threat feeds that are auto-fethed by FortiGate from a web server. Please check release notes for details.

@@ -1,0 +1,37 @@
+- hosts: localhost
+  vars:
+   host: "1.1.1.1"
+   username: "admin"
+   password: ""
+   vdom: "internet"
+   urls_from_file: "{{lookup('file','./urls.json') | from_json }}"
+  tasks:
+
+  - name: "set url table"
+    fortiosconfig:
+     config: "webfilter urlfilter"
+     action: "set"
+     host: "{{ host }}"
+     username: "{{ username }}"
+     password: "{{ password }}"
+     vdom: "{{ vdom }}"
+
+     config_parameters:
+       id: "1"
+       json:
+         entries: "{{ urls_from_file }}"
+
+  - name: "check current url table"
+    fortiosconfig:
+     config: "webfilter urlfilter"
+     action: "get"
+     host: "{{ host }}"
+     username: "{{ username }}"
+     password: "{{ password }}"
+     vdom: "{{ vdom }}"
+     config_parameters:
+       id: "1"
+    register: url_table_state
+
+  - debug: 
+      msg: "URL loaded/in-file: [{{ url_table_state.meta.results.0.entries | length }} / {{ urls_from_file | length }}]"

@@ -1,5 +1,5 @@
 [
-          {"url": "test1.com", "action": "block"}, 
+          {"url": "test1.com", "action": "block"},
           {"url": "test2.com", "action": "block"},
           {"url": "test3.com", "action": "block"}
 ]

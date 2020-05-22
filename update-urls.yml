@@ -1,10 +1,13 @@
 - hosts: localhost
+  gather_facts: no
   vars:
-   host: "1.1.1.1"
+   host: "172.16.0.1"
    username: "admin"
    password: ""
-   vdom: "internet"
-   urls_from_file: "{{lookup('file','./urls.json') | from_json }}"
+   urls_from_file: "{{ lookup('file','{{ file }}') | from_json }}"
+   vdom: "root"
+   ssl_verify: False
+
   tasks:
 
   - name: "set url table"
@@ -15,6 +18,7 @@
      username: "{{ username }}"
      password: "{{ password }}"
      vdom: "{{ vdom }}"
+     ssl_verify: "{{ ssl_verify }}"
 
      config_parameters:
        id: "1"
@@ -29,9 +33,11 @@
      username: "{{ username }}"
      password: "{{ password }}"
      vdom: "{{ vdom }}"
+     ssl_verify: "{{ ssl_verify }}"
+
      config_parameters:
        id: "1"
     register: url_table_state
 
-  - debug: 
+  - debug:
       msg: "URL loaded/in-file: [{{ url_table_state.meta.results.0.entries | length }} / {{ urls_from_file | length }}]"
